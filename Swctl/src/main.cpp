@@ -95,8 +95,8 @@ void onMqttConnect(bool sessionPresent) {
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
-  Serial.println("Disconnected from MQTT.");
-
+  Serial.println("Disconnected from MQTT.Pump to Off.");
+  digitalWrite(relayPin, LOW);
   if (WiFi.isConnected()) {
     mqttReconnectTimer.once(2, connectToMqtt);
   }
@@ -216,8 +216,8 @@ void loop() {
     int currentMonth = ptm->tm_mon+1;
     String currentMonthName = months[currentMonth-1];
     int currentYear = ptm->tm_year+1900;
-    String currentDate = String(currentYear) + "-" + String(currentMonth) + "-" + String(monthDay);
-    String showDT = currentDate + "--" + formattedTime;
+    String currentDate = String(currentYear) + "-" + currentMonthName + "-" + String(monthDay);
+    String showDT = currentDate + "  " + formattedTime;
     Serial.printf("Current Date-Time: %s", showDT.c_str());
     Serial.println();
 
